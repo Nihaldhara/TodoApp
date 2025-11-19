@@ -33,10 +33,11 @@ import com.nihaldhara.todoapp.ui.theme.TodoAppTheme
 
 @Composable
 fun MainPage(modifier: Modifier) {
+    val todoList = mutableListOf<TodoItem>()
     var taskInput by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,7 +65,12 @@ fun MainPage(modifier: Modifier) {
             )
             IconButton(
                 modifier = Modifier.padding(8.dp),
-                onClick = {}
+                onClick = {
+                    if (taskInput != "") {
+                        todoList.add(TodoItem(taskInput, false))
+                        taskInput = ""
+                    }
+                }
             ) {
                 Icon(
                     modifier = Modifier

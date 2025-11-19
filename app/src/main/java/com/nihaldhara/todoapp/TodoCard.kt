@@ -24,6 +24,7 @@ import com.nihaldhara.todoapp.ui.theme.TodoAppTheme
 fun TodoCard(
     modifier: Modifier,
     task: TodoItem,
+    onCheckedChange: (Boolean) -> Unit
 ) {
     var toggleTask by remember { mutableStateOf(false) }
 
@@ -45,7 +46,10 @@ fun TodoCard(
             Text(task.name)
             Checkbox(
                 checked = toggleTask,
-                onCheckedChange = { toggleTask = !toggleTask }
+                onCheckedChange = {
+                    toggleTask = !toggleTask
+                    onCheckedChange(it)
+                }
             )
         }
     }
@@ -55,6 +59,6 @@ fun TodoCard(
 @Composable
 fun TodoCardPreview() {
     TodoAppTheme {
-        TodoCard(modifier = Modifier, TodoItem("Task Name", false))
+        TodoCard(modifier = Modifier, TodoItem("Task Name", false), {})
     }
 }

@@ -91,7 +91,13 @@ fun MainPage(modifier: Modifier) {
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(todoList) { todo ->
-                TodoCard(Modifier.padding(horizontal = 16.dp), task = todo)
+                TodoCard(
+                    Modifier.padding(horizontal = 16.dp),
+                    task = todo,
+                    onCheckedChange = { state ->
+                        todo.state = state
+                    }
+                )
             }
         }
 

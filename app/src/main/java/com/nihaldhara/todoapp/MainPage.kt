@@ -17,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,6 +33,8 @@ import com.nihaldhara.todoapp.ui.theme.TodoAppTheme
 
 @Composable
 fun MainPage(modifier: Modifier) {
+    var taskInput by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,8 +58,8 @@ fun MainPage(modifier: Modifier) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             TextField(
-                value = "",
-                onValueChange = {},
+                value = taskInput,
+                onValueChange = { taskInput = it },
                 label = { Text("New Task") }
             )
             IconButton(
@@ -70,7 +76,7 @@ fun MainPage(modifier: Modifier) {
         }
 
         Column() {
-            TodoCard(Modifier.padding(16.dp))
+            TodoCard(Modifier.padding(16.dp), taskName = "Task Name")
         }
 
     }

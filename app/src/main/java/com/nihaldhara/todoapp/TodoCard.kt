@@ -15,6 +15,10 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import com.nihaldhara.todoapp.ui.theme.TodoAppTheme
 
 @Composable
-fun TodoCard(modifier: Modifier) {
+fun TodoCard(modifier: Modifier, taskName: String) {
+    var toggleTask by remember { mutableStateOf(false) }
+
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth(),
@@ -38,10 +44,10 @@ fun TodoCard(modifier: Modifier) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Item Name")
+            Text(taskName)
             Checkbox(
-                checked = false,
-                onCheckedChange = {}
+                checked = toggleTask,
+                onCheckedChange = { toggleTask = !toggleTask }
             )
         }
     }
@@ -51,6 +57,6 @@ fun TodoCard(modifier: Modifier) {
 @Composable
 fun TodoCardPreview() {
     TodoAppTheme {
-        TodoCard(modifier = Modifier)
+        TodoCard(modifier = Modifier, "Task Name")
     }
 }

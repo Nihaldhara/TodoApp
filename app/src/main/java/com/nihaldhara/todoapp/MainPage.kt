@@ -39,6 +39,7 @@ import com.nihaldhara.todoapp.ui.theme.TodoAppTheme
 fun MainPage(modifier: Modifier) {
     val todoList = remember { mutableStateListOf<TodoItem>() }
     var taskInput by remember { mutableStateOf("") }
+    var filter by remember { mutableStateOf(0) }
     val listState = rememberLazyListState()
 
     Column(
@@ -59,7 +60,7 @@ fun MainPage(modifier: Modifier) {
         )
 
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -86,18 +87,55 @@ fun MainPage(modifier: Modifier) {
             }
         }
 
+        Row(
+            modifier = Modifier.padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Button(
+                onClick = {
+                    filter = 0
+                }
+            ) {
+                Text("All")
+            }
+            Button(
+                onClick = {
+                    filter = 1
+                }
+            ) {
+                Text("Todo")
+            }
+            Button(
+                onClick = {
+                    filter = 2
+                }
+            ) {
+                Text("Done")
+            }
+        }
+
         LazyColumn(
             state = listState,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(todoList) { todo ->
-                TodoCard(
-                    Modifier.padding(horizontal = 16.dp),
-                    task = todo,
-                    onCheckedChange = { state ->
-                        todo.state = state
-                    }
-                )
+                val shouldShow = when (filter) {
+                    0 -> true
+                    1 -> !todo.state
+                    2 -> todo.state
+                    else -> false
+                }
+
+                if (shouldShow) {
+                    TodoCard(
+                        Modifier.padding(horizontal = 16.dp),
+                        todo = todo,
+                        onCheckedChange = { state ->
+                            val index = todoList.indexOf(todo)
+                            todoList[index] = todo.copy(state = state)
+                        }
+                    )
+                }
             }
         }
 
